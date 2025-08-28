@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+import textwrap
 
 # Create your models here.
 
@@ -22,6 +23,11 @@ class Course(models.Model):
 
     def __str__(self):
         return self.title
+
+    def short_description(self):
+        return textwrap.shorten(self.description, width=70, placeholder=" <...>")
+
+    short_description.short_description = "Краткое описание"
 
 
 class Enrollment(models.Model):

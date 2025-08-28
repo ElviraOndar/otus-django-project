@@ -11,7 +11,7 @@ class EnrollmentInline(admin.TabularInline):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('title', 'description', 'teacher')
+    list_display = ('title', 'short_description', 'teacher')
     list_filter = ('teacher',)
 
     search_fields = ('title', 'description', 'teacher')
