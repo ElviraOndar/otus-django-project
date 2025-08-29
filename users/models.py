@@ -14,7 +14,15 @@ class User(AbstractUser):
         ordering = ["username"]
 
     def __str__(self):
-        return f"{self.username} ({'Преподаватель' if self.is_teacher else 'Студент'})"
+        if self.is_teacher and self.is_student:
+            role = "Преподаватель/Студент"
+        elif self.is_teacher:
+            role = "Преподаватель"
+        elif self.is_student:
+            role = "Студент"
+        else:
+            role = "Админ"
+        return f"{self.username} ({role})"
 
 
 
