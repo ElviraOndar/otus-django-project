@@ -6,6 +6,10 @@ import textwrap
 
 
 class Course(models.Model):
+    class Meta:
+        verbose_name = "Курс"
+        verbose_name_plural = "Курсы"
+
     title = models.CharField(max_length=200, unique=True, null=False, blank=False)
     description = models.TextField()
 
@@ -37,6 +41,8 @@ class Enrollment(models.Model):
                 fields=["student", "course"], name="uniq_student_course"
             )
         ]
+        verbose_name = "Запись на курс"
+        verbose_name_plural = "Запись на курс"
 
     student = models.ForeignKey(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE,

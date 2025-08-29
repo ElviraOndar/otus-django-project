@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Lesson
-
-# Register your models here.
+from django import forms
+from django.contrib.admin.widgets import AdminSplitDateTime
 
 
 class LessonInline(admin.TabularInline):
@@ -9,8 +9,24 @@ class LessonInline(admin.TabularInline):
     extra = 1
 
 
+class LessonAdminForm(forms.ModelForm):
+    class Meta:
+        model = Lesson
+        fields = "__all__"
+        widgets = {
+            "start_time": AdminSplitDateTime(),
+            "end_time": AdminSplitDateTime(),
+        }
+
+
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
+    form = LessonAdminForm
     list_display = ("title", "course", "teacher", "start_time", "end_time")
     list_filter = ("course", "teacher", "start_time")
-    search_fields = ("title", "description", "course__title")
+    search_fields = ("title", "course__title")
+
+
+
+
+
