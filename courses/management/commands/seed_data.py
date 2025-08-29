@@ -1,5 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group, Permission
+from django.contrib.contenttypes.models import ContentType
 from courses.models import Course, Enrollment
 from schedule.models import Lesson
 from django.utils import timezone
@@ -9,13 +11,13 @@ User = get_user_model()
 
 
 class Command(BaseCommand):
-    help = "Загружает тестовые данные (2 учителя, 6 студентов, 2 курса и уроки)."
+    help = "Загружает тестовые данные (группы, 2 учителя, 6 студентов, 2 курса, уроки и записи)."
 
     def add_arguments(self, parser):
         parser.add_argument(
             "--flush",
             action="store_true",
-            help="Удалить все тестовые данные (учителя, студентов, курсы, уроки, записи).",
+            help="Удалить все тестовые данные (группы, пользователей, курсы, уроки, записи).",
         )
 
     def handle(self, *args, **options):
@@ -23,6 +25,32 @@ class Command(BaseCommand):
             self._flush_data()
             self.stdout.write(self.style.WARNING("🗑 Тестовые данные удалены."))
             return
+
+        # --- Создаём группы ---
+        teachers_group, created_t = Group.objects.get_or_create(name="teachers")
+        students_group, created_s = Group.objects.get_or_create(name="students")
+
+        lesson_ct = ContentType.objects.get_for_model(Lesson)
+        course_ct = ContentType.objects.get_for_model(Course)
+
+        if created_t:
+            teacher_permissions = Permission.objects.filter(
+                content_type__in=[lesson_ct, course_ct],
+                codename__in=[
+                    "add_lesson", "change_lesson", "delete_lesson", "view_lesson",
+                    "add_course", "change_course", "delete_course", "view_course",
+                ],
+            )
+            teachers_group.permissions.set(teacher_permissions)
+            self.stdout.write(self.style.SUCCESS("👨‍🏫 Группа teachers создана и получила права."))
+
+        if created_s:
+            student_permissions = Permission.objects.filter(
+                content_type__in=[lesson_ct, course_ct],
+                codename__in=["view_lesson", "view_course"],
+            )
+            students_group.permissions.set(student_permissions)
+            self.stdout.write(self.style.SUCCESS("👩‍🎓 Группа students создана и получила права."))
 
         # --- Учителя ---
         teacher1, created = User.objects.get_or_create(
@@ -37,6 +65,7 @@ class Command(BaseCommand):
         if created:
             teacher1.set_password("password123")
             teacher1.save()
+        teacher1.groups.add(teachers_group)
 
         teacher2, created = User.objects.get_or_create(
             username="teacher2",
@@ -50,6 +79,7 @@ class Command(BaseCommand):
         if created:
             teacher2.set_password("password123")
             teacher2.save()
+        teacher2.groups.add(teachers_group)
 
         # --- Студенты ---
         students = []
@@ -68,6 +98,7 @@ class Command(BaseCommand):
                 defaults={
                     "email": f"{username}@example.com",
                     "is_teacher": False,
+                    "is_student": True,
                     "first_name": first_name,
                     "last_name": last_name,
                 }
@@ -75,17 +106,23 @@ class Command(BaseCommand):
             if created:
                 student.set_password("password123")
                 student.save()
+            student.groups.add(students_group)
             students.append(student)
 
         # --- Курсы ---
         course1, _ = Course.objects.get_or_create(
             title="Python Basics",
-            defaults={"description": "Курс для начинающих, которые только делают первые шаги в программировании. Вы освоите основы синтаксиса Python, научитесь работать с переменными, условиями, циклами, функциями и коллекциями. Практические задания помогут закрепить теорию и сразу увидеть результат. По окончании курса вы сможете писать простые программы и будете готовы к дальнейшему изучению Python и разработки приложений.", "teacher": teacher1}
+            defaults={"description": "Курс для начинающих, которые только делают первые шаги в программировании. Вы освоите основы синтаксиса Python, работу с переменными, условиями, циклами, функциями и коллекциями. Практические задания помогут закрепить теорию и сразу увидеть результат. После курса вы сможете писать простые программы и будете готовы к дальнейшему изучению Python и разработки приложений.", "teacher": teacher1}
         )
         course2, _ = Course.objects.get_or_create(
             title="Django Web Development",
             defaults={"description": "Практический курс по созданию веб-приложений на Django. Вы научитесь работать с моделями и ORM, проектировать базы данных, создавать формы и админку, а также писать свои API. Разберём маршрутизацию, шаблоны, авторизацию и работу с пользователями. Итогом курса станет готовый проект — полноценное веб-приложение на Django, которое можно развернуть на сервере.", "teacher": teacher2}
         )
+
+        # --- Записываем студентов на оба курса ---
+        for student in students:
+            Enrollment.objects.get_or_create(student=student, course=course1)
+            Enrollment.objects.get_or_create(student=student, course=course2)
 
         # --- Уроки ---
         Lesson.objects.get_or_create(
@@ -102,7 +139,6 @@ class Command(BaseCommand):
             start_time=timezone.now().replace(hour=10, minute=0, second=0, microsecond=0) + timedelta(days=2),
             end_time=timezone.now().replace(hour=12, minute=0, second=0, microsecond=0) + timedelta(days=2),
         )
-
         Lesson.objects.get_or_create(
             course=course2,
             title="Введение в Django",
@@ -118,11 +154,6 @@ class Command(BaseCommand):
             end_time=timezone.now().replace(hour=20, minute=0, second=0, microsecond=0) + timedelta(days=4),
         )
 
-        # --- Записываем студентов на курсы ---
-        for student in students:
-            Enrollment.objects.get_or_create(student=student, course=course1)
-            Enrollment.objects.get_or_create(student=student, course=course2)
-
         self.stdout.write(self.style.SUCCESS("✅ Seed data успешно загружены!"))
 
     def _flush_data(self):
@@ -132,3 +163,4 @@ class Command(BaseCommand):
         Course.objects.filter(title__in=["Python Basics", "Django Web Development"]).delete()
         User.objects.filter(username__in=["teacher1", "teacher2"]).delete()
         User.objects.filter(username__startswith="student").delete()
+        Group.objects.filter(name__in=["teachers", "students"]).delete()
