@@ -22,8 +22,25 @@
    git clone https://github.com/ElviraOndar/otus-django-project
    cd otus-django-project
    ```
-2. Установите зависимости:  
+   
+   Создайте виртуальное окружение:
    ```bash
+   python3 -m venv .venv
+   ```
+   
+   Активируйте виртуальное окружение:
+   - На Mac/Linux:
+      ```bash
+      source .venv/bin/activate
+      ```
+   - На Windows (PowerShell):
+      ```bash
+      .venv\Scripts\Activate.ps1
+      ```
+
+2. Обновите pip и установите зависимости:  
+   ```bash
+   pip install --upgrade pip
    pip install -r requirements.txt
    ```
 3. Примените миграции:  
