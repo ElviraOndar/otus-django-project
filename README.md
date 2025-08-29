@@ -42,7 +42,6 @@
 3. Установите зависимости:  
    ```bash
    pip install -r requirements.txt
-   pip install python-decouple
    ```
 4. Настройка секретного ключа:
 
@@ -50,14 +49,9 @@
  ```bash
    python -c "import secrets; print(secrets.token_urlsafe())"
    ```
-- Создайте файл .env в корне проекта и добавьте:
+- Создайте файл .env в корне проекта и добавьте туда ключ:
 ```bash
    SECRET_KEY=ваш_уникальный_секретный_ключ
-   ```
-- В settings.py используйте:
-```bash
-   from decouple import config
-  SECRET_KEY = config('SECRET_KEY')
    ```
 
 5. Примените миграции:  
