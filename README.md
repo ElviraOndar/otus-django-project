@@ -42,6 +42,7 @@
 3. Установите зависимости:  
    ```bash
    pip install -r requirements.txt
+   pip install python-decouple
    ```
 4. Настройка секретного ключа:
 
