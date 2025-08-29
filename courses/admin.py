@@ -7,6 +7,7 @@ from .models import Course, Enrollment
 class EnrollmentInline(admin.TabularInline):
     model = Enrollment
     extra = 1  # сколько пустых строк показывается в админ-панели для добавления новых студентов
+    readonly_fields = ('date_joined',)  # не редактировать дату присоединения
 
 
 @admin.register(Course)
