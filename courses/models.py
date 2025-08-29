@@ -38,7 +38,7 @@ class Enrollment(models.Model):
             )
         ]
 
-    student = models.ForeignKey('users.User',
+    student = models.ForeignKey(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE,
                                 limit_choices_to={'is_student': True},
                                 )
