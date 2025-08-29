@@ -12,11 +12,16 @@ class EnrollmentInline(admin.TabularInline):
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('title', 'short_description', 'teacher')
-    list_filter = ('teacher',)
+    list_display = ('title', 'short_description', 'teacher', 'get_students')
+    list_filter = ('title', 'teacher',)
 
     search_fields = ('title', 'description', 'teacher')
     inlines = [EnrollmentInline]
+
+    def get_students(self, obj):
+        return ", ".join([student.username for student in obj.students.all()])
+
+    get_students.short_description = "Students"
 
 
 @admin.register(Enrollment)

@@ -6,7 +6,7 @@ import textwrap
 
 
 class Course(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, unique=True, null=False, blank=False)
     description = models.TextField()
 
     teacher = models.ForeignKey(
@@ -27,7 +27,7 @@ class Course(models.Model):
     def short_description(self):
         return textwrap.shorten(self.description, width=70, placeholder=" <...>")
 
-    short_description.short_description = "Краткое описание"
+    short_description.short_description = "Short Description"
 
 
 class Enrollment(models.Model):
