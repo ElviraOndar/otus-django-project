@@ -78,7 +78,7 @@
    ```bash
    python manage.py seed_data
    ```
-   Это создаст:
+   Это создаст по адресу http://127.0.0.1:8000/admin/
 - Группы teachers и students с нужными правами
 - Двух преподавателей (teacher1, teacher2)
 - 6 студентов (student1, student2... student6)
