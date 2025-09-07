@@ -19,6 +19,10 @@ class Course(models.Model):
         related_name="courses_taught",
         limit_choices_to={"is_teacher": True},
     )
+
+    def get_teacher_name(self):
+        return f"{self.teacher.first_name} {self.teacher.last_name}".strip()
+
     students = models.ManyToManyField(
         settings.AUTH_USER_MODEL,
         through="Enrollment",
