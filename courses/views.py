@@ -1,6 +1,4 @@
-from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Course
 from .forms import CourseForm
 from django.urls import reverse_lazy
@@ -20,34 +18,24 @@ class CourseDetailView(DetailView):
     context_object_name = 'course'
 
 
-class CourseCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+class CourseCreateView(CreateView):
     model = Course
     form_class = CourseForm
     template_name = 'courses/course_form.html'
     success_url = reverse_lazy('courses:courses')
 
-    def test_func(self):
-        # Только преподаватели или админы могут создавать курс
-        return self.request.user.is_teacher or self.request.user.is_staff
 
-
-class CourseUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class CourseUpdateView(UpdateView):
     model = Course
     form_class = CourseForm
     template_name = 'courses/course_form.html'
     success_url = reverse_lazy('courses:courses')
 
-    def test_func(self):
-        # Только преподаватели или админы могут обновлять курс
-        return self.request.user.is_teacher or self.request.user.is_staff
 
-
-class CourseDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class CourseDeleteView(DeleteView):
     model = Course
     template_name = 'courses/course_confirm_delete.html'
     success_url = reverse_lazy('courses:courses')
 
-    def test_func(self):
-        # Только преподаватели или админы могут удалять курс
-        return self.request.user.is_teacher or self.request.user.is_staff
+
 
