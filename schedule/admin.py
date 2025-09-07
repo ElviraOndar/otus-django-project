@@ -4,11 +4,6 @@ from django import forms
 from django.contrib.admin.widgets import AdminSplitDateTime
 
 
-class LessonInline(admin.TabularInline):
-    model = Lesson
-    extra = 1
-
-
 class LessonAdminForm(forms.ModelForm):
     class Meta:
         model = Lesson
