@@ -1,17 +1,6 @@
 from django.contrib import admin
 from .models import Lesson
-from django import forms
-from django.contrib.admin.widgets import AdminSplitDateTime
-
-
-class LessonAdminForm(forms.ModelForm):
-    class Meta:
-        model = Lesson
-        fields = "__all__"
-        widgets = {
-            "start_time": AdminSplitDateTime(),
-            "end_time": AdminSplitDateTime(),
-        }
+from .forms import LessonAdminForm
 
 
 @admin.register(Lesson)
