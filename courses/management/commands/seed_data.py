@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group, Permission
-from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import Group
 from courses.models import Course, Enrollment
 from schedule.models import Lesson
 from django.utils import timezone
@@ -11,7 +10,7 @@ User = get_user_model()
 
 
 class Command(BaseCommand):
-    help = "Загружает тестовые данные (группы, 2 учителя, 6 студентов, 2 курса, уроки и записи)"
+    help = "Загружает тестовые данные: 2 учителя, 6 студентов, 2 курса, уроки и записи"
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -26,31 +25,9 @@ class Command(BaseCommand):
             self.stdout.write(self.style.WARNING("🗑 Тестовые данные удалены"))
             return
 
-        # Создаем группы
-        teachers_group, created_t = Group.objects.get_or_create(name="teachers")
-        students_group, created_s = Group.objects.get_or_create(name="students")
-
-        lesson_ct = ContentType.objects.get_for_model(Lesson)
-        course_ct = ContentType.objects.get_for_model(Course)
-
-        if created_t:
-            teacher_permissions = Permission.objects.filter(
-                content_type__in=[lesson_ct, course_ct],
-                codename__in=[
-                    "add_lesson", "change_lesson", "delete_lesson", "view_lesson",
-                    "add_course", "change_course", "delete_course", "view_course",
-                ],
-            )
-            teachers_group.permissions.set(teacher_permissions)
-            self.stdout.write(self.style.SUCCESS("👨‍🏫 Группа teachers создана и получила права"))
-
-        if created_s:
-            student_permissions = Permission.objects.filter(
-                content_type__in=[lesson_ct, course_ct],
-                codename__in=["view_lesson", "view_course"],
-            )
-            students_group.permissions.set(student_permissions)
-            self.stdout.write(self.style.SUCCESS("👩‍🎓 Группа students создана и получила права"))
+        # Создаем группы (без назначения прав для админки)
+        teachers_group, _ = Group.objects.get_or_create(name="teachers")
+        students_group, _ = Group.objects.get_or_create(name="students")
 
         # Учителя
         teacher1, created = User.objects.get_or_create(
@@ -63,7 +40,6 @@ class Command(BaseCommand):
             }
         )
         if created:
-            teacher1.set_password("password123")
             teacher1.save()
         teacher1.groups.add(teachers_group)
 
@@ -77,7 +53,6 @@ class Command(BaseCommand):
             }
         )
         if created:
-            teacher2.set_password("password123")
             teacher2.save()
         teacher2.groups.add(teachers_group)
 
@@ -104,7 +79,6 @@ class Command(BaseCommand):
                 }
             )
             if created:
-                student.set_password("password123")
                 student.save()
             student.groups.add(students_group)
             students.append(student)
@@ -112,11 +86,17 @@ class Command(BaseCommand):
         # Курсы
         course1, _ = Course.objects.get_or_create(
             title="Python Basics",
-            defaults={"description": "Курс для начинающих, которые только делают первые шаги в программировании. Вы освоите основы синтаксиса Python, работу с переменными, условиями, циклами, функциями и коллекциями. Практические задания помогут закрепить теорию и сразу увидеть результат. После курса вы сможете писать простые программы и будете готовы к дальнейшему изучению Python и разработке приложений", "teacher": teacher1}
+            defaults={
+                "description": "Курс для начинающих, которые только делают первые шаги в программировании. Вы освоите основы синтаксиса Python, работу с переменными, условиями, циклами, функциями и коллекциями.",
+                "teacher": teacher1
+            }
         )
         course2, _ = Course.objects.get_or_create(
             title="Django Web Development",
-            defaults={"description": "Практический курс по созданию веб-приложений на Django. Вы научитесь работать с моделями и ORM, проектировать базы данных, создавать формы и админку, а также писать свои API. Разберем маршрутизацию, шаблоны, авторизацию и работу с пользователями. Итогом курса станет готовый проект — полноценное веб-приложение на Django, которое можно развернуть на сервере", "teacher": teacher2}
+            defaults={
+                "description": "Практический курс по созданию веб-приложений на Django. Вы научитесь работать с моделями и ORM, проектировать базы данных, создавать формы и админку, а также писать свои API.",
+                "teacher": teacher2
+            }
         )
 
         # Записываем студентов на оба курса
@@ -124,7 +104,7 @@ class Command(BaseCommand):
             Enrollment.objects.get_or_create(student=student, course=course1)
             Enrollment.objects.get_or_create(student=student, course=course2)
 
-        # Ставим в расписание уроки по обоим курсам
+        # Уроки
         Lesson.objects.get_or_create(
             course=course1,
             title="Введение в Python",
