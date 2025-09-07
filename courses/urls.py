@@ -16,11 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from courses.views import CoursesListView, CourseDetailView
+from courses.views import CoursesListView, CourseDetailView, CourseCreateView, CourseUpdateView, CourseDeleteView
 
 app_name = 'courses'
 
 urlpatterns = [
     path('', CoursesListView.as_view(), name='courses'),
     path('<int:pk>/', CourseDetailView.as_view(), name='course'),
+    path('create/', CourseCreateView.as_view(), name='course_create'),
+    path('<int:pk>/update/', CourseUpdateView.as_view(), name='course_update'),
+    path('<int:pk>/delete/', CourseDeleteView.as_view(), name='course_delete'),
 ]
