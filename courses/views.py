@@ -39,3 +39,4 @@ class CourseDeleteView(DeleteView):
 
 
 
+
