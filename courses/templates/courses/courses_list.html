@@ -6,7 +6,11 @@
     <h2>Образовательные программы CodeCourse</h2>
     <ul>
     {% for course in courses %}
-            <li><a href="{% url 'courses:course' course.pk %}">{{ course.title }}</a></li>
+            <li>
+                <a href="{% url 'courses:course' course.pk %}">{{ course.title }}</a><br>
+                <strong>Преподаватель</strong>: {{ course.teacher.first_name }} {{ course.teacher.last_name }}<br>
+                <strong>Количество студентов</strong>: {{ course.students.count }}
+            </li>
     {% endfor %}
     </ul>
 {% endblock %}
