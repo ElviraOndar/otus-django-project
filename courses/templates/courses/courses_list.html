@@ -1,17 +1,16 @@
 {% extends 'base.html' %}
 
-{% block title %} Все курсы {% endblock %}
+{% block title %}Все курсы{% endblock %}
 
 {% block content %}
     <h2>Образовательные программы CodeCourse</h2>
     <ul>
     {% for course in courses %}
-            <li>
-                <a href="{% url 'courses:course' course.pk %}">{{ course.title }}</a><br>
-                <strong>Преподаватель</strong>: {{ course.teacher.first_name }} {{ course.teacher.last_name }}<br>
-                <strong>Количество студентов</strong>: {{ course.students.count }}
-            </li>
+        <li>
+            <a href="{% url 'courses:course' course.pk %}">{{ course.title }}</a><br>
+            Преподаватель: {{ course.teacher.first_name }} {{ course.teacher.last_name }}<br>
+            Количество студентов: {{ course.num_students }}  {# используем поле annotate, а не course.students.count #}
+        </li>
     {% endfor %}
     </ul>
 {% endblock %}
-

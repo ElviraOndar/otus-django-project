@@ -2,6 +2,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Course
 from .forms import CourseForm
 from django.urls import reverse_lazy
+from django.db.models import Count
 
 # Create your views here.
 
@@ -10,6 +11,10 @@ class CoursesListView(ListView):
     model = Course
     template_name = 'courses/courses_list.html'
     context_object_name = 'courses'
+
+    def get_queryset(self):
+        """Подгружаем преподавателя одним JOIN и считаем студентов одной SQL-командой"""
+        return Course.objects.select_related('teacher').annotate(num_students=Count('students'))
 
 
 class CourseDetailView(DetailView):
