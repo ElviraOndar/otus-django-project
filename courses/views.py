@@ -2,7 +2,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Course
 from .forms import CourseForm
 from django.urls import reverse_lazy
-from django.db.models import Count
+from django.db.models import Count, Prefetch
+from schedule.models import Lesson
 
 # Create your views here.
 
@@ -21,6 +22,17 @@ class CourseDetailView(DetailView):
     model = Course
     template_name = 'courses/course_detail.html'
     context_object_name = 'course'
+
+    def get_queryset(self):
+        # Создаём Prefetch для уроков с преподавателем
+        lessons_prefetch = Prefetch(
+            'lessons',
+            queryset=Lesson.objects.select_related('teacher').order_by('start_time')
+        )
+        return Course.objects.select_related('teacher').prefetch_related(
+            'students',
+            lessons_prefetch
+        )
 
 
 class CourseCreateView(CreateView):
