@@ -4,12 +4,10 @@
 
 {% block content %}
     <h2>Образовательные программы CodeCourse</h2>
-    
+    <ul>
     {% for course in courses %}
-        <ul>
             <li><a href="{% url 'courses:course' course.pk %}">{{ course.title }}</a></li>
-        </ul>
     {% endfor %}
-
+    </ul>
 {% endblock %}
 
