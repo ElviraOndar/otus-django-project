@@ -9,6 +9,7 @@ from schedule.models import Lesson
 
 
 class CoursesListView(ListView):
+    """Показывает список всех курсов с преподавателями, а также количество студентов на каждом курсе"""
     model = Course
     template_name = 'courses/courses_list.html'
     context_object_name = 'courses'
@@ -19,6 +20,7 @@ class CoursesListView(ListView):
 
 
 class CourseDetailView(DetailView):
+    """Показывает всю информацию о курсе, а также запланированные уроки с именем преподавателя"""
     model = Course
     template_name = 'courses/course_detail.html'
     context_object_name = 'course'
