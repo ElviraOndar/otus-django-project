@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_results',
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
     'schedule.apps.ScheduleConfig',
@@ -137,3 +138,20 @@ INTERNAL_IPS = [
     "127.0.0.1",
     "0.0.0.0",
 ]
+
+# ##### CELERY CONFIGURATION #####
+CELERY_BROKER_URL = "redis - FORBIDDEN - localhost:6379/0"  # Redis как брокер сообщений (БД 0)
+CELERY_RESULT_BACKEND = "django-db"  # Хранить результаты задач в базе данных проекта
+
+CELERY_ACCEPT_CONTENT = ['json']  # Разрешенный формат содержимого для задач
+CELERY_TASK_SERIALIZER = 'json'   # Сериализатор для задач
+CELERY_RESULT_SERIALIZER = 'json'  # Сериализатор для результатов
+CELERY_TIMEZONE = "Europe/Moscow"  # Часовой пояс, чтобы Celery выполнял задачи в адекватное время
+
+CELERY_TASK_TRACK_STARTED = True  # Отслеживать статус 'STARTED'
+CELERY_TASK_TIME_LIMIT = 30 * 60  # Максимальное время выполнения задачи (30 минут)
+# ##### END CELERY CONFIGURATION #####
+
+# ##### EMAIL CONFIGURATION (для разработки/тестирования) #####
+EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
+EMAIL_FILE_PATH = BASE_DIR / "app-messages" # Папка для сохранения писем
