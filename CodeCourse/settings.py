@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'courses.apps.CoursesConfig',
     'schedule.apps.ScheduleConfig',
     'debug_toolbar',
+    'contacts',
 ]
 
 MIDDLEWARE = [
@@ -154,4 +155,10 @@ CELERY_TASK_TIME_LIMIT = 30 * 60  # Максимальное время выпо
 
 # ##### EMAIL CONFIGURATION (для разработки/тестирования) #####
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
-EMAIL_FILE_PATH = BASE_DIR / "app-messages" # Папка для сохранения писем
+EMAIL_FILE_PATH = BASE_DIR / "app-messages"  # Папка для сохранения писем
+DEFAULT_FROM_EMAIL = 'noreply@myproject - FORBIDDEN - '
+
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+ADMINS = [
+    ('Эльвира', 'elvira_kharunova@mail.ru - FORBIDDEN - ')
+]

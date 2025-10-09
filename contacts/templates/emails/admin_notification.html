@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Новое сообщение с сайта</title>
+    </head>
+    <body>
+        <h2>Новое сообщение с формы обратной связи</h2>
+        <p><strong>Отправитель:</strong> {{ name }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>Тема:</strong> {{ subject }}</p>
+        <h3>Сообщение:</h3>
+        <p>{{ message|linebreaksbr }}</p>
+        <br>
+        <small>Это автоматическое уведомление.</small>
+    </body>
+    </html>
