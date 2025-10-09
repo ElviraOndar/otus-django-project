@@ -141,7 +141,7 @@ INTERNAL_IPS = [
 ]
 
 # ##### CELERY CONFIGURATION #####
-CELERY_BROKER_URL = "redis - FORBIDDEN - localhost:6379/0"  # Redis как брокер сообщений (БД 0)
+CELERY_BROKER_URL = "redis://localhost:6379/0"  # Redis как брокер сообщений (БД 0)
 CELERY_RESULT_BACKEND = "django-db"  # Хранить результаты задач в базе данных проекта
 
 CELERY_ACCEPT_CONTENT = ['json']  # Разрешенный формат содержимого для задач
