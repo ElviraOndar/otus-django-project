@@ -1,3 +1,4 @@
+from django.http import HttpResponseForbidden
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Course
 from .forms import CourseForm
@@ -49,6 +50,11 @@ class CourseUpdateView(UpdateView):
     form_class = CourseForm
     template_name = 'courses/course_form.html'
     success_url = reverse_lazy('courses:courses')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not (request.user.is_teacher or request.user.is_superuser):
+            return HttpResponseForbidden("У вас нет прав для редактирования курса")
+        return super().dispatch(request, *args, **kwargs)
 
 
 class CourseDeleteView(DeleteView):

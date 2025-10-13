@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 from dotenv import load_dotenv
 from os import getenv
 
@@ -43,12 +44,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_celery_results',
+    # мои приложения
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
     'schedule.apps.ScheduleConfig',
+    'contacts.apps.ContactsConfig',
+    # сторонние приложения
+    'django_celery_results',
     'debug_toolbar',
-    'contacts',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -162,3 +166,46 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 ADMINS = [
     ('Эльвира', 'elvira_kharunova@mail.ru - FORBIDDEN - ')
 ]
+
+
+REST_FRAMEWORK = {
+    # Аутентификация
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+
+    # Права доступа по умолчанию
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    # Фильтр
+    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+
+    # Пагинация
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,
+
+    # Рендереры (JSON и HTML Browsable API)
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',  # для отображения в браузере
+    ],
+}
+
+# После успешного логина пользователя на /api-auth/login/, перенаправить его на эту страницу
+LOGIN_REDIRECT_URL = '/api/'
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # время жизни access-токена
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),     # время жизни refresh-токена
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': True,
+
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,  # можно оставить по умолчанию
+    'AUTH_HEADER_TYPES': ('Bearer',),  # заголовок: Authorization: Bearer <token>
+}
+

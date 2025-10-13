@@ -17,11 +17,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
+    # HTML Views
     path('admin/', admin.site.urls),
-    path('', include('courses.urls')),
+    path('', include('courses.urls')),  # HTML routes
     path('contacts/', include('contacts.urls')),
+
+    # REST API
+    path('api/', include('courses.api.urls')),  # DRF API routes
+    path('api-auth/', include('rest_framework.urls')),  # для тестирования в браузере
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),   # получение access и refresh токена
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # обновление access токена
 ]
 
 if settings.DEBUG:
