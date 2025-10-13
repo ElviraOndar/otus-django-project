@@ -40,6 +40,7 @@ class Command(BaseCommand):
             }
         )
         if created:
+            teacher1.set_password("teach_pass1")
             teacher1.save()
         teacher1.groups.add(teachers_group)
 
@@ -53,6 +54,7 @@ class Command(BaseCommand):
             }
         )
         if created:
+            teacher2.set_password("teach_pass2")
             teacher2.save()
         teacher2.groups.add(teachers_group)
 
@@ -67,7 +69,12 @@ class Command(BaseCommand):
             ("student6", "Sophia", "Taylor"),
         ]
 
-        for username, first_name, last_name in student_names:
+        student_passwords = [
+            "stud_pass1", "stud_pass2", "stud_pass3",
+            "stud_pass4", "stud_pass5", "stud_pass6"
+        ]
+
+        for (username, first_name, last_name), password in zip(student_names, student_passwords):
             student, created = User.objects.get_or_create(
                 username=username,
                 defaults={
@@ -79,6 +86,7 @@ class Command(BaseCommand):
                 }
             )
             if created:
+                student.set_password(password)
                 student.save()
             student.groups.add(students_group)
             students.append(student)

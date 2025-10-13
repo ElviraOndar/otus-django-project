@@ -181,8 +181,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
-    # Фильтр
-    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 
     # Пагинация
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -195,7 +193,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-# После успешного логина пользователя на /api-auth/login/, перенаправить его на эту страницу
+# После успешного логина пользователя на /api-auth/login/ надо перенаправить его на эту страницу:
 LOGIN_REDIRECT_URL = '/api/'
 
 SIMPLE_JWT = {
