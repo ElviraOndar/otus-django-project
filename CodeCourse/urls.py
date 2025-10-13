@@ -20,6 +20,7 @@ from django.conf import settings
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
+    TokenVerifyView,
 )
 
 urlpatterns = [
@@ -33,6 +34,7 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),  # для тестирования в браузере
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),   # получение access и refresh токена
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # обновление access токена
+    path('api/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 ]
 
 if settings.DEBUG:
