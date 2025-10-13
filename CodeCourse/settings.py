@@ -129,13 +129,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
 STATIC_URL = 'static/'
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -155,7 +149,6 @@ CELERY_TIMEZONE = "Europe/Moscow"  # Часовой пояс, чтобы Celery 
 
 CELERY_TASK_TRACK_STARTED = True  # Отслеживать статус 'STARTED'
 CELERY_TASK_TIME_LIMIT = 30 * 60  # Максимальное время выполнения задачи (30 минут)
-# ##### END CELERY CONFIGURATION #####
 
 # ##### EMAIL CONFIGURATION (для разработки/тестирования) #####
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
@@ -189,7 +182,7 @@ REST_FRAMEWORK = {
     # Рендереры (JSON и HTML Browsable API)
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
-        'rest_framework.renderers.BrowsableAPIRenderer',  # для отображения в браузере
+        'rest_framework.renderers.BrowsableAPIRenderer',
     ],
 }
 
@@ -203,7 +196,7 @@ SIMPLE_JWT = {
     'BLACKLIST_AFTER_ROTATION': True,
 
     'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,  # можно оставить по умолчанию
-    'AUTH_HEADER_TYPES': ('Bearer',),  # заголовок: Authorization: Bearer <token>
+    'SIGNING_KEY': SECRET_KEY,
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
