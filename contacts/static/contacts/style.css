@@ -1,0 +1,84 @@
+/* Контейнер формы */
+.contact-container {
+  max-width: 600px;
+  margin: 3rem auto;
+  padding: 2rem;
+  background-color: #0077cc; /* как navbar */
+  border-radius: 10px;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-family: Arial, sans-serif;
+}
+
+/* Заголовок формы */
+.contact-container h1 {
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+/* Подпись */
+.contact-container p {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* Поля формы */
+.contact-container .form-control {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  background-color: rgba(255,255,255,0.1);
+  color: white;
+}
+
+/* Placeholder белый с прозрачностью */
+.contact-container .form-control::placeholder {
+  color: rgba(255,255,255,0.8);
+}
+
+/* Сообщения об ошибках */
+.contact-container .text-danger {
+  color: #f8d7da; /* красный оттенок */
+  margin-top: -0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+/* Django messages */
+.contact-container .alert {
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+.alert-success {
+  background-color: #28a745;
+  color: white;
+}
+
+.alert-error, .alert-danger {
+  background-color: #e74c3c;
+  color: white;
+}
+
+/* Кнопка отправки */
+.contact-container button {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  background-color: #e74c3c; /* как logout-button */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.contact-container button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+}

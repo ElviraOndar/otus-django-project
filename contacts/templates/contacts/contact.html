@@ -4,47 +4,55 @@
 {% block title %}Контакты{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h1>Свяжитесь с нами</h1>
-            <p>У вас есть вопросы или предложения?
-                Заполните форму ниже, и мы с вами свяжемся.</p>
+<link rel="stylesheet" href="{% static 'contacts/style.css' %}">
 
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}" role="alert">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
+<div class="contact-container">
+    <h1>Свяжитесь с нами</h1>
+    <p>У вас есть вопросы или предложения? Заполните форму ниже, и мы с вами свяжемся.</p>
 
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        {{ form.name.label_tag }}
-                        {{ form.name }}
-                        {% if form.name.errors %}<div class="text-danger">{{ form.name.errors }}</div>{% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.email.label_tag }}
-                        {{ form.email }}
-                        {% if form.email.errors %}<div class="text-danger">{{ form.email.errors }}</div>{% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.subject.label_tag }}
-                        {{ form.subject }}
-                        {% if form.subject.errors %}<div class="text-danger">{{ form.subject.errors }}</div>{% endif %}
-                    </div>
-                    <div class="mb-3">
-                        {{ form.message.label_tag }}
-                        {{ form.message }}
-                        {% if form.message.errors %}<div class="text-danger">{{ form.message.errors }}</div>{% endif %}
-                    </div>
-                    <button type="submit" class="btn btn-primary">Отправить сообщение</button>
-                </form>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}" role="alert">
+                {{ message }}
             </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            {{ form.name.label_tag }}
+            {{ form.name }}
+            {% if form.name.errors %}
+                <div class="text-danger">{{ form.name.errors }}</div>
+            {% endif %}
         </div>
-    </div>
-    {% endblock %}
-            
+
+        <div>
+            {{ form.email.label_tag }}
+            {{ form.email }}
+            {% if form.email.errors %}
+                <div class="text-danger">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            {{ form.subject.label_tag }}
+            {{ form.subject }}
+            {% if form.subject.errors %}
+                <div class="text-danger">{{ form.subject.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div>
+            {{ form.message.label_tag }}
+            {{ form.message }}
+            {% if form.message.errors %}
+                <div class="text-danger">{{ form.message.errors }}</div>
+            {% endif %}
+        </div>
+
+        <button type="submit">Отправить сообщение</button>
+    </form>
+</div>
+{% endblock %}

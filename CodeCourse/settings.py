@@ -161,6 +161,7 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 ADMINS = [
     ('Эльвира', 'elvira_kharunova@mail.ru - FORBIDDEN - ')
 ]
+CONTACT_EMAIL = 'elvira_kharunova@mail.ru'  # сюда можешь поставить свой email, письма будут писаться в файлы
 
 
 REST_FRAMEWORK = {
