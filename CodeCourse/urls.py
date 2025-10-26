@@ -31,6 +31,8 @@ urlpatterns = [
 
     # REST API
     path('api/', include('courses.api.urls')),  # DRF API routes
+    path('api/', include('users.api.urls')),  # для личного кабинета пользователя
+
     path('api-auth/', include('rest_framework.urls')),  # для тестирования в браузере
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),   # получение access и refresh токена
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),  # обновление access токена

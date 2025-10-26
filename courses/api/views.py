@@ -18,13 +18,28 @@ class CourseViewSet(viewsets.ModelViewSet):
     permission_classes = [IsTeacherOrReadOnly]
 
     def get_queryset(self):
+        user = self.request.user
+        mine = self.request.query_params.get('mine')
+
         lessons_prefetch = Prefetch(
             "lessons",
             queryset=Lesson.objects.select_related("teacher").order_by("start_time"),
         )
-        return Course.objects.select_related("teacher").prefetch_related(
-            "students", lessons_prefetch
-        ).annotate(num_students=Count("students"))
+
+        qs = (
+            Course.objects.select_related("teacher")
+            .prefetch_related("students", lessons_prefetch)
+            .annotate(num_students=Count("students"))
+        )
+
+        # Если передан параметр ?mine=true — показываем только курсы текущего пользователя
+        if mine and user.is_authenticated:
+            if user.is_teacher:
+                qs = qs.filter(teacher=user)
+            elif user.is_student:
+                qs = qs.filter(students=user)
+
+        return qs
 
     def perform_create(self, serializer):
         #  Преподаватель автоматически становится учителем курса
