@@ -5,16 +5,16 @@
     <title>{% block title %}  {% endblock %} </title>
 </head>
 <!-- БЛОК ДЛЯ ОТОБРАЖЕНИЯ СООБЩЕНИЙ DJANGO -->
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-                        {{ message }}
-                        <span class="close-message" onclick="this.parentNode.style.display='none';">&times;</span>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% endif %}
+{#        {% if messages %}#}
+{#            <ul class="messages">#}
+{#                {% for message in messages %}#}
+{#                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>#}
+{#                        {{ message }}#}
+{#                        <span class="close-message" onclick="this.parentNode.style.display='none';">&times;</span>#}
+{#                    </li>#}
+{#                {% endfor %}#}
+{#            </ul>#}
+{#        {% endif %}#}
 <!-- КОНЕЦ БЛОКА СООБЩЕНИЙ -->
 <body>
     {% block content %} {% endblock %}
