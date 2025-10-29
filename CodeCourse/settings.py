@@ -161,8 +161,7 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL
 ADMINS = [
     ('Эльвира', 'elvira_kharunova@mail.ru - FORBIDDEN - ')
 ]
-CONTACT_EMAIL = 'elvira_kharunova@mail.ru'  # сюда можешь поставить свой email, письма будут писаться в файлы
-
+CONTACT_EMAIL = 'elvira_kharunova@mail.ru'
 
 REST_FRAMEWORK = {
     # Аутентификация
@@ -189,7 +188,6 @@ REST_FRAMEWORK = {
     ],
 }
 
-# После успешного логина пользователя на /api-auth/login/ надо перенаправить его на эту страницу:
 LOGIN_REDIRECT_URL = '/api/'
 
 SIMPLE_JWT = {

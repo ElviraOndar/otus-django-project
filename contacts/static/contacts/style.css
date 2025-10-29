@@ -1,4 +1,3 @@
-/* Контейнер формы */
 .contact-container {
   max-width: 600px;
   margin: 3rem auto;
@@ -10,20 +9,18 @@
   font-family: Arial, sans-serif;
 }
 
-/* Заголовок формы */
 .contact-container h1 {
   text-align: center;
   margin-bottom: 1rem;
   font-weight: bold;
 }
 
-/* Подпись */
 .contact-container p {
   text-align: center;
   margin-bottom: 2rem;
 }
 
-/* Поля формы */
+
 .contact-container .form-control {
   width: 100%;
   padding: 0.7rem 1rem;
@@ -35,20 +32,18 @@
   color: white;
 }
 
-/* Placeholder белый с прозрачностью */
 .contact-container .form-control::placeholder {
   color: rgba(255,255,255,0.8);
 }
 
-/* Сообщения об ошибках */
 .contact-container .text-danger {
-  color: #f8d7da; /* красный оттенок */
+  color: #f8d7da;
   margin-top: -0.5rem;
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
 }
 
-/* Django messages */
+
 .contact-container .alert {
   padding: 0.8rem 1rem;
   border-radius: 6px;
@@ -65,11 +60,10 @@
   color: white;
 }
 
-/* Кнопка отправки */
 .contact-container button {
   width: 100%;
   padding: 0.7rem 1rem;
-  background-color: #e74c3c; /* как logout-button */
+  background-color: #e74c3c;
   color: white;
   border: none;
   border-radius: 6px;

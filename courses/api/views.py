@@ -55,7 +55,7 @@ class CourseEnrollView(APIView):
     permission_classes = [IsStudent]
 
     def post(self, request, pk):
-        """записаться на курс"""
+        """Записаться на курс"""
         course = get_object_or_404(Course, pk=pk)
         if Enrollment.objects.filter(student=request.user, course=course).exists():
             return Response({"detail": "Вы уже записаны на этот курс."}, status=status.HTTP_400_BAD_REQUEST)
