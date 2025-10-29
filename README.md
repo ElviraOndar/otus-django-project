@@ -17,7 +17,7 @@ https://github.com/ElviraOndar/code-course-frontend
 
 ## REST API и аутентификация
 
-В проекте реализованы:
+В бэкенд-части проекта реализованы:
 
 1. REST API для работы с курсами (courses)
 
