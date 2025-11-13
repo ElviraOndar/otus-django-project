@@ -158,10 +158,6 @@ EMAIL_FILE_PATH = BASE_DIR / "app-messages"  # Папка для сохране�
 DEFAULT_FROM_EMAIL = 'noreply@myproject - FORBIDDEN - '
 
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
-ADMINS = [
-    ('Эльвира', 'elvira_kharunova@mail.ru - FORBIDDEN - ')
-]
-CONTACT_EMAIL = 'elvira_kharunova@mail.ru'
 
 REST_FRAMEWORK = {
     # Аутентификация
